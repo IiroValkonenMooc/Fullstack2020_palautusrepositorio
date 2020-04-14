@@ -19,8 +19,12 @@ const Button = ({text, handleClick}) => {
 const StatisticLine = ({ text, value, optEndingChar }) => {
   return (
     <tr>
-      <td>{text}</td>
-      <td>{value} {optEndingChar}</td>
+      <td>
+        {text}
+      </td>
+      <td>
+        {value} {optEndingChar}
+      </td>
     </tr>
   )
 }
