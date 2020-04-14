@@ -16,7 +16,14 @@ const Button = ({text, handleClick}) => {
   )
 }
 
-const StatisticLine = ({text, value, optEndingChar}) => <p>{text} {value} {optEndingChar}</p>
+const StatisticLine = ({ text, value, optEndingChar }) => {
+  return (
+    <tr>
+      <td>{text}</td>
+      <td>{value} {optEndingChar}</td>
+    </tr>
+  )
+}
 
 const Statistics = ({ good,  neutral, bad }) => {
   let allRatings = good + neutral + bad;
@@ -43,18 +50,16 @@ const Statistics = ({ good,  neutral, bad }) => {
       <div>
         <h1>statistics</h1>
 
-        <p>good {good}</p>
-        <StatisticLine text="good" value={good} />
-        <p>neutral {neutral}</p>
-        <StatisticLine text="neutral" value={neutral} />
-        <p>bad {bad}</p>
-        <StatisticLine text="bad" value={bad} />
-        <p>all {allRatings}</p>
-        <StatisticLine text="all" value={allRatings} />
-        <p>average {averageRating} </p>
-        <StatisticLine text="average" value={averageRating} />
-        <p>positive {positiveRatingPercentrage} %</p>
-        <StatisticLine text="positive" value={positiveRatingPercentrage} optEndingChar="%" />
+        <table>
+          <tbody>
+            <StatisticLine text="good" value={good} />
+            <StatisticLine text="neutral" value={neutral} />
+            <StatisticLine text="bad" value={bad} />
+            <StatisticLine text="all" value={allRatings} />
+            <StatisticLine text="average" value={averageRating} />
+            <StatisticLine text="positive" value={positiveRatingPercentrage} optEndingChar="%" />
+          </tbody>
+        </table>
       </div>
     )
   } else {
