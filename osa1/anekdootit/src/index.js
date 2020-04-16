@@ -14,6 +14,39 @@ function Anecdote (text) {
   this.score = 0;
 }
 
+const TopAnecdoteText = (prop) =>{
+  console.log('top anecdote list prop :', prop);
+
+  let arr = prop.prop.concat();
+  console.log('arr :', arr);
+
+  arr.sort((a,b)=> b.score - a.score )
+  console.log('arr :', arr);
+  const maxScore = arr[0].score;
+  
+  let bestPicks = [];
+  for (let i = 0; i < arr.length; i++) {
+    if(arr[i].score==maxScore){
+      bestPicks.push(arr[i]);
+    }
+  }
+
+  console.log('bestPicks :', bestPicks);
+  const randomSelector = Math.round(Math.random() * (bestPicks.length - 1))
+  console.log('randomSelector :', randomSelector);
+
+  return (
+    <>
+    <p>
+      {bestPicks[randomSelector].text}
+    </p>
+    <p>
+      has {bestPicks[randomSelector].score} votes
+    </p>
+    </>
+  )
+}
+
 const AnecdoteText = (anecdote) =>{
   console.log('anecdote text prop :', anecdote);
   return (
@@ -34,6 +67,7 @@ const AnecdoteScore = (anecdote) => {
 }
 
 const App = (props) => {
+  const [topPickSelector, setTopPickSelector] = useState(0);
   const [selected, setSelected] = useState(0);
   const [anecdotesList, setAnecdotesList] = useState(anecdotes);
   console.log('Props:',props.anecdotes);
@@ -42,6 +76,9 @@ const App = (props) => {
 
   return (
     <div>
+      <h1>Anecdote of the day</h1>
+      
+      <h1>Random anecdotes</h1>
       {/* {props.anecdotes[selected]} */}
       <AnecdoteText anecdote={anecdotesList[selected].text } />
       <AnecdoteScore anecdote={anecdotesList[selected].score } />
@@ -56,6 +93,10 @@ const App = (props) => {
         console.log('selected :', selected);
       }}
       />
+
+      <h2>Top picks</h2>
+
+      <TopAnecdoteText prop = {anecdotesList} />
     </div>
   )
 }
