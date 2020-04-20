@@ -1,52 +1,65 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-const Header = (props) => {
+const Header = ({course}) => {
+  console.log('header tulostuu');
   return (
     <div>
-      <h1> {props.course} </h1>
+      <h1> {course.name} </h1>
     </div>
   )
 }
 
-const Part = (props) => {
+const Part = ({part}) => {
   console.log('osa tulostuu')
-  console.log(props)
+  console.log('part :', part);
   return (
     <div>
-      <p>{props.part.name} {props.part.exercises}</p>
+      <p>{part.name} {part.exercises}</p>
     </div>
   )
 }
 
-const Content = (props) => {
+const Content = ({course}) => {
   console.log('content tulostuu')
-  console.log(props)
-  console.log(props.contentArray)
-  console.log(props.contentArray[0])
-  console.log(props.contentArray[0].name)
+  console.log('course :', course);
 
   return (
     <div>
-      <Part part={props.contentArray[0]}/>
-      <Part part={props.contentArray[1]}/>
-      <Part part={props.contentArray[2]}/>
+      {/* <Part part={course.parts[0]} /> */}
+      {course.parts.map(
+        (part, i) => <Part key={i} part={part} />
+      )
+      }
+
     </div>
   )
 }
 
-const Total = (props) => {
-  console.log(props)
-
-  let exerciseNumber = 0
-
-  props.contentArray.forEach(element => {
-    exerciseNumber += element.exercises
-  });
+const Total = ({course}) => {
+  // let exerciseNumber = course.parts.reduce(function (accumulator, currentValue) {
+  //   return accumulator + currentValue.exercises
+  // }, 0)
+  
+  const exerciseNumber = course.parts.reduce( (accumulator, currentValue) => 
+    accumulator + currentValue.exercises
+  , 0)
 
   return (
     <div>
-      <p>Number of exercises {exerciseNumber }</p>
+      <p>Total number of exercises {exerciseNumber}</p>
+    </div>
+  )
+}
+
+const Course = ({course}) => {
+  console.log('course :', course);
+
+  return (
+    <div>
+      <Header course={course} />
+      <Content course = {course} />
+      <Total course={course} />
     </div>
   )
 }
@@ -72,11 +85,7 @@ const App = () => {
 
 
   return (
-    <div>
-      <Header course ={course.name} />
-      <Content contentArray = {course.parts}  />
-      <Total contentArray = {course.parts} />
-    </div>
+    <Course course={course} />
   )
 }
 
