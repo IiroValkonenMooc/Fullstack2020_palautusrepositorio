@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import Courses from './components/courses'
+import Course from './components/course'
 
 
 
@@ -51,7 +51,7 @@ const App = () => {
   ]
 
   return (
-    <Courses courses={courses} />
+    <Course courses={courses} />
   )
 }
 

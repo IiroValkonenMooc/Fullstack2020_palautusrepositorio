@@ -50,7 +50,7 @@ const Header = ({course}) => {
     )
   }
   
-  const Courses = ({courses}) => {
+  const Course = ({courses}) => {
     console.log('courses :', courses);
   
   
@@ -68,4 +68,4 @@ const Header = ({course}) => {
     )
   }
 
-  export default Courses
+  export default Course
