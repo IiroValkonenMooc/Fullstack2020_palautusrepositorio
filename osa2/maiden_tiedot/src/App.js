@@ -3,8 +3,10 @@ import axios from 'axios'
 import CountryInfo from './components/CountryInfo'
 
 function App() {
-  const [searchFilter, setSearchFilter] = useState('')
+  const [searchFilter, setSearchFilter] = useState('swi')
   const [countries, setCountries ] = useState([])
+  const [localWeather, setLocalWeather ] = useState([])
+  const apiKey = process.env.REACT_APP_KEY
 
   const hook = () => {
     console.log('promise');
@@ -13,8 +15,8 @@ function App() {
           console.log('response :>> ', response);
           setCountries(response.data);
         } 
-      )
-  }
+    )
+}
 
   useEffect(hook, [])
 
@@ -25,7 +27,8 @@ function App() {
   return (
     <div >
       Find countries <input value={searchFilter} onChange = {handleChange} />
-      <CountryInfo countries = {countries} filter = {searchFilter} setFilter = {setSearchFilter} />
+      <CountryInfo countries = {countries} filter = {searchFilter} setFilter = {setSearchFilter} 
+        weatherApiKey = {apiKey} localWeather = {localWeather} setLocalWeather = {setLocalWeather} />
     </div>
   );
 }
