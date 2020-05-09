@@ -1,7 +1,6 @@
 import React from 'react'
-import axios from 'axios'
 
-const CountryInfo = ({countries, filter, setFilter, weatherApiKey, localWeather, setLocalWeather}) => {
+const CountryInfo = ({countries, filter, setFilter}) => {
 
     let countriesFiltered = countries.slice().filter((country) => {
         // console.log('country :>> ', country);
@@ -27,31 +26,13 @@ const CountryInfo = ({countries, filter, setFilter, weatherApiKey, localWeather,
 
     if (countriesFiltered.length === 1 ) {
         console.log('Found only one!');
-
-        const params = {
-            access_key: weatherApiKey,
-            query: countriesFiltered[0].capital
-        }
         
-        console.log('weatherApiKey :>> ', weatherApiKey);
-        console.log('params :>> ', params);
-
-        axios.get("http://api.weatherstack.com/current", { params })
-            .then(response => {
-                //setLocalWeather(response.data); 
-                console.log('selectedCountryCapitalWeather :>> ', response.data);
-            });
-        
-
-        console.log('localWeather :>> ', localWeather);
-
-
         return(
             <div>
                 <h2>{countriesFiltered[0].name}</h2>
                 <p>
                     {countriesFiltered[0].capital} <br></br>
-                    population {countriesFiltered[0].population} 
+                    <strong>population</strong> {countriesFiltered[0].population} 
                 </p>
                 <h3>Languages</h3>
                 <ul>
@@ -59,12 +40,11 @@ const CountryInfo = ({countries, filter, setFilter, weatherApiKey, localWeather,
                 </ul>
                 <br></br>
                 <img width = {300} src = {countriesFiltered[0].flag} alt = 'here should be a flag' ></img>
-                <h3>Weather in {countriesFiltered[0].capital}</h3>
-                {/* <p><strong>temperature:</strong> {localWeather.current.temperature} </p> */}
             </div>
         )
 
     } else {
+
         return (
             <div>
                 {countriesFiltered.map( (country, index) => {
