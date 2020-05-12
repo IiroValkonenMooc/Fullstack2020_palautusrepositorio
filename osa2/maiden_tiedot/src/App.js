@@ -73,7 +73,7 @@ function App() {
   return (
     <div >
       Find countries <input value={searchFilter} onChange = {handleChange} />
-      <CountryInfo countries = {countries} filter = {searchFilter} setFilter = {setSearchFilter} />
+      <CountryInfo countries = {countries} filter = {searchFilter} setFilter = {setSearchFilter} setLocalWeather ={setLocalWeatherSelect}/>
       <Weather weatherData = {localWeatherData}/>
     </div>
   );

@@ -1,6 +1,6 @@
 import React from 'react'
 
-const CountryInfo = ({countries, filter, setFilter}) => {
+const CountryInfo = ({countries, filter, setFilter, setLocalWeather}) => {
 
     let countriesFiltered = countries.slice().filter((country) => {
         // console.log('country :>> ', country);
@@ -32,7 +32,7 @@ const CountryInfo = ({countries, filter, setFilter}) => {
                 <h2>{countriesFiltered[0].name}</h2>
                 <p>
                     {countriesFiltered[0].capital} <br></br>
-                    <strong>population</strong> {countriesFiltered[0].population} 
+                    population {countriesFiltered[0].population} 
                 </p>
                 <h3>Languages</h3>
                 <ul>
@@ -51,7 +51,10 @@ const CountryInfo = ({countries, filter, setFilter}) => {
                     return(
                         <p key={index} >
                             {country.name} 
-                            <button onClick = {() => setFilter(country.name) } >
+                            <button onClick = {() => {
+                                setFilter(country.name)
+                                setLocalWeather(country.capital)
+                                } } >
                                 show
                             </button>
                             <br></br>
