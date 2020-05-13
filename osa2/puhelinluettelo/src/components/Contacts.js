@@ -1,16 +1,19 @@
 import React from 'react'
 
-const Contacts = ({contactList, filter}) => {
+const Contacts = ({contactList, filter, deleteService}) => {
     //console.log('contactList :>> ', contactList);
-    contactList = contactList.filter( contact => contact.name.toLowerCase().includes(filter.toLowerCase()) )
+    const contactListFiltered = contactList.filter( contact => contact.name.toLowerCase().includes(filter.toLowerCase()) )
 
     return(
         <div>
             {
-                contactList.map((contact, i) => {
+                contactListFiltered.map((contact, i) => {
                     return (
                         <div key={contact.name}>
-                            {contact.name +' '+ contact.number}
+                            {contact.name +' '+ contact.number} 
+                            <button onClick = {() => console.log('delete', contact.id)}>
+                                delete
+                            </button>
                         </div>
                     )
                 }

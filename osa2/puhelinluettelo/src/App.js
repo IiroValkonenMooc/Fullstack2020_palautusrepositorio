@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
+//import axios from 'axios'
 import Contacts from './components/Contacts'
 import Header from './components/Header'
 import Filter from './components/Filter'
 import Form from './components/Form'
+import contactService from './services/contactServices'
 
 const App = () => {
   const [persons, setPersons] = useState(
@@ -20,13 +21,9 @@ const App = () => {
   const [ newNumber, setnewNumber ] = useState('')
 
   const hook = () => {
-    console.log('promise');
-    axios.get('http://localhost:3001/persons')
-    .then(response => {
-        console.log('response :>> ', response);
-        setPersons( response.data )
-      }
-    )
+    console.log('Effect');
+    contactService.getContacts()
+      .then(contacts => setPersons(contacts) );
   }
 
   useEffect( hook ,[])
@@ -46,15 +43,21 @@ const App = () => {
 
   const handleSubmit= (event) =>{
     event.preventDefault();
-    const tempArr = persons.map( names => names = names.name )
-    console.log('tempArr :>> ', tempArr);
 
-    if( !(tempArr.includes(newName)) ){
-      console.log('New contact added');
-      setPersons( persons.concat( {name: newName, number: newNumber} ) );
-    } else {
-      window.alert( `${newName} is already added to phonebook` );
-    }
+    const retVal = contactService.createContact(newName, newNumber);
+  
+    retVal.then(retVal => {
+      if( retVal===0 ){
+        console.log('New contact added');    
+        contactService.getContacts().then(contacts => setPersons(contacts) );  
+      } else {
+        window.alert( `${newName} is already added to phonebook` );
+      }
+    })
+  }
+
+  const handleDelete = () => {
+    
   }
 
   return (
@@ -67,7 +70,7 @@ const App = () => {
         number={newNumber} handleNumberChange={handleNumberChange} />
 
       <Header text = {'Numbers'} />
-      <Contacts contactList={persons.slice()} filter={newFilter.slice()} />
+      <Contacts contactList={persons} filter={newFilter.slice()} />
     </div>
   )
 
