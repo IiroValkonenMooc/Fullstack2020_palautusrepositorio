@@ -5,6 +5,7 @@ import Header from './components/Header'
 import Filter from './components/Filter'
 import Form from './components/Form'
 import contactService from './services/contactServices'
+import Message from './components/Message'
 
 const App = () => {
   const [persons, setPersons] = useState(
@@ -19,6 +20,7 @@ const App = () => {
   const [ newFilter, setNewFilter ] = useState('')
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setnewNumber ] = useState('')
+  const [ errorMessage, setErrorMessage] = useState(null)
 
   const hook = () => {
     console.log('Effect');
@@ -27,6 +29,14 @@ const App = () => {
   }
 
   useEffect( hook ,[] )
+
+  const changeMessage = async(text) => {
+    console.log('Error message display');
+    setErrorMessage(text);
+    setTimeout(() => {
+      setErrorMessage('')
+    }, 1200);
+  }
 
   const handleFilterChange = (event) => {
     setNewFilter(event.target.value)
@@ -38,7 +48,7 @@ const App = () => {
   }
 
   const handleNumberChange = (event) => {
-    setnewNumber(event.target.value)
+    setnewNumber(event.target.value);
   }
 
   const handleSubmit= (event) =>{
@@ -48,13 +58,15 @@ const App = () => {
   
     retVal.then(retVal => {
       if( retVal===0 ){
-        console.log('New contact added');    
-        contactService.getContacts().then(contacts => setPersons(contacts) );  
+        console.log('New contact added');
+        contactService.getContacts().then(contacts => setPersons(contacts) ); 
+        changeMessage('New contact added') 
       } else {
         const confirm = window.confirm( `${newName} is already added to phonebook.\nDo you want to update new number to existing contact` );
         if(confirm){
           contactService.updateContactNumber(newName, newNumber)
             .then(updatedContacts => setPersons(updatedContacts));
+          changeMessage('Contact number changed') 
         }
       }
     })
@@ -63,12 +75,15 @@ const App = () => {
   const handleDelete = (id) => {
     contactService.deleteContact(id)
       .then(updatedContacts => setPersons(updatedContacts));
+      changeMessage('Contact deleted')
   }
 
   return (
     <div>
       <Header text = {'Phonebook'} />
       <Filter filter ={newFilter} handleChange={handleFilterChange} />
+      
+      <Message textToDisplay = {errorMessage} />
       
       <Header text = {'add new name'} />
       <Form  handleSubmit={handleSubmit} name={newName} handleNameChange={handleNameChange}
