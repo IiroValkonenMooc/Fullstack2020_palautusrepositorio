@@ -26,7 +26,7 @@ const App = () => {
       .then(contacts => setPersons(contacts) );
   }
 
-  useEffect( hook ,[])
+  useEffect( hook ,[] )
 
   const handleFilterChange = (event) => {
     setNewFilter(event.target.value)
@@ -51,13 +51,18 @@ const App = () => {
         console.log('New contact added');    
         contactService.getContacts().then(contacts => setPersons(contacts) );  
       } else {
-        window.alert( `${newName} is already added to phonebook` );
+        const confirm = window.confirm( `${newName} is already added to phonebook.\nDo you want to update new number to existing contact` );
+        if(confirm){
+          contactService.updateContactNumber(newName, newNumber)
+            .then(updatedContacts => setPersons(updatedContacts));
+        }
       }
     })
   }
 
-  const handleDelete = () => {
-    
+  const handleDelete = (id) => {
+    contactService.deleteContact(id)
+      .then(updatedContacts => setPersons(updatedContacts));
   }
 
   return (
@@ -70,7 +75,7 @@ const App = () => {
         number={newNumber} handleNumberChange={handleNumberChange} />
 
       <Header text = {'Numbers'} />
-      <Contacts contactList={persons} filter={newFilter.slice()} />
+      <Contacts contactList={persons} filter={newFilter.slice()} deleteService ={handleDelete}/>
     </div>
   )
 

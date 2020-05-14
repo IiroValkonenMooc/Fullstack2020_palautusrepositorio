@@ -11,7 +11,12 @@ const Contacts = ({contactList, filter, deleteService}) => {
                     return (
                         <div key={contact.name}>
                             {contact.name +' '+ contact.number} 
-                            <button onClick = {() => console.log('delete', contact.id)}>
+                            <button onClick = {() => {
+                                    const result = window.confirm(`Do you really want to delete ${contact.name}`);
+                                    if(result){
+                                        deleteService(contact.id);
+                                    }
+                                } }>
                                 delete
                             </button>
                         </div>

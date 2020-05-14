@@ -21,9 +21,22 @@ const createContact = (newnName, newNumber) => {
     return retVal;
 }
 
-const deleteContact = (id) => {
-    console.log(axios.delete(baseUrl, id)); 
-
+const deleteContact = async (idToDelete) => {
+    console.log('id to delete :>> ', idToDelete);
+    await axios.delete(`${baseUrl}/${idToDelete}`);
+    return getContacts().then(updatedContacts => {return updatedContacts})
 }
 
-export default {getContacts, createContact, deleteContact}
+const updateContactNumber = async (nameToUpdate, newNumber) => {
+    console.log('name to update :>> ', nameToUpdate);
+    await getContacts().then(contacts => {
+        const contactToFind = contacts.find(contact => contact.name === nameToUpdate);
+        axios.patch(`${baseUrl}/${contactToFind.id}`, {number: newNumber});
+    })
+
+    return getContacts().then(updatedContacts => {return updatedContacts})
+    //await axios.patch(`${baseUrl}/${idToUpdate}`, {number: newNumber});
+    //return getContacts().then(updatedContacts => {return updatedContacts})
+}
+
+export default {getContacts, createContact, deleteContact, updateContactNumber}
