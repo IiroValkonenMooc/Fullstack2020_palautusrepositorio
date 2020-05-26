@@ -1,15 +1,23 @@
 import React from 'react';
 
-const Message = ({textToDisplay}) => {
+const Message = ({textToDisplay, redText }) => {
     if(textToDisplay===null | textToDisplay === undefined){
-        return <div className = "none">asd </div>
+        return <div className = "none"> </div>
     }
-
-    return (
-         <div className = {'errMsg'}>
+    
+    if(redText === true){
+        return(
+            <div className = {'errMsgTrue'}>
              {textToDisplay}
-         </div> 
-         )
+            </div> 
+        )
+    } else {
+        return (
+            <div className = {'errMsg'}>
+                {textToDisplay}
+            </div> 
+            )
+    }
 }
 
 export default Message

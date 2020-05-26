@@ -21,6 +21,7 @@ const App = () => {
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setnewNumber ] = useState('')
   const [ errorMessage, setErrorMessage] = useState(null)
+  const [ redErrorText, setRedErrorText] = useState(false)
 
   const hook = () => {
     console.log('Effect');
@@ -30,12 +31,14 @@ const App = () => {
 
   useEffect( hook ,[] )
 
-  const changeMessage = async(text) => {
+  const changeMessage = async(text, redText) => {
     console.log('Error message display');
+    if(redText){ setRedErrorText(true) }
     setErrorMessage(text);
     setTimeout(() => {
-      setErrorMessage('')
+      setErrorMessage(null)
     }, 1200);
+    if( redErrorText ) { setRedErrorText(false) }
   }
 
   const handleFilterChange = (event) => {
@@ -74,8 +77,19 @@ const App = () => {
 
   const handleDelete = (id) => {
     contactService.deleteContact(id)
-      .then(updatedContacts => setPersons(updatedContacts));
-      changeMessage('Contact deleted')
+      .then(newContacts => {
+        console.log('newContacts :>> ', newContacts);
+        setPersons(newContacts.updatedContacts);
+
+        if(newContacts.error === 1){
+          console.log("Throwing error text");
+          const person = persons.find(person => person.id === id )
+          changeMessage(`error, contact ${person.name} is allready deleted from server`, true);
+        } else {
+          console.log("Throwing normal text");
+          changeMessage('Contact deleted', false);
+        }
+      })
   }
 
   return (
@@ -83,14 +97,14 @@ const App = () => {
       <Header text = {'Phonebook'} />
       <Filter filter ={newFilter} handleChange={handleFilterChange} />
       
-      <Message textToDisplay = {errorMessage} />
+      <Message textToDisplay = {errorMessage} redText = {redErrorText}  />
       
       <Header text = {'add new name'} />
       <Form  handleSubmit={handleSubmit} name={newName} handleNameChange={handleNameChange}
         number={newNumber} handleNumberChange={handleNumberChange} />
 
       <Header text = {'Numbers'} />
-      <Contacts contactList={persons} filter={newFilter.slice()} deleteService ={handleDelete}/>
+      <Contacts contactList={persons} personfilter={newFilter.slice()} deleteService ={handleDelete}/>
     </div>
   )
 

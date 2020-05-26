@@ -1,8 +1,8 @@
 import React from 'react'
 
-const Contacts = ({contactList, filter, deleteService}) => {
-    //console.log('contactList :>> ', contactList);
-    const contactListFiltered = contactList.filter( contact => contact.name.toLowerCase().includes(filter.toLowerCase()) )
+const Contacts = ({contactList, personfilter, deleteService}) => {
+    console.log('contactList :>> ', contactList);
+    const contactListFiltered = contactList.filter( contact => contact.name.toLowerCase().includes(personfilter.toLowerCase()) )
 
     return(
         <div>

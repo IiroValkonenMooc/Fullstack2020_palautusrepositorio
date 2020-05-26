@@ -23,8 +23,14 @@ const createContact = (newnName, newNumber) => {
 
 const deleteContact = async (idToDelete) => {
     console.log('id to delete :>> ', idToDelete);
-    await axios.delete(`${baseUrl}/${idToDelete}`);
-    return getContacts().then(updatedContacts => {return updatedContacts})
+    const deleteSuccess = await axios.delete(`${baseUrl}/${idToDelete}`)
+        .then(() => { return 0} )
+        .catch( error => {
+            console.log('error :>> ', error);
+            return 1;
+        })
+
+    return getContacts().then(updatedContacts => {return {updatedContacts:updatedContacts, error: deleteSuccess}})
 }
 
 const updateContactNumber = async (nameToUpdate, newNumber) => {
