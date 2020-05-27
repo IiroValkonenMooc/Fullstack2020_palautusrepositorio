@@ -67,9 +67,11 @@ const App = () => {
       } else {
         const confirm = window.confirm( `${newName} is already added to phonebook.\nDo you want to update new number to existing contact` );
         if(confirm){
+          console.log('old contacts :>> ', persons);
           contactService.updateContactNumber(newName, newNumber)
-            .then(updatedContacts => setPersons(updatedContacts));
-          changeMessage('Contact number changed') 
+            .then(updatedContacts => setPersons(updatedContacts))
+            .then( () => changeMessage('Contact number changed') );
+          console.log('new contacts :>> ', persons);
         }
       }
     })

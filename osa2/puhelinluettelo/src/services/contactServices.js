@@ -35,14 +35,12 @@ const deleteContact = async (idToDelete) => {
 
 const updateContactNumber = async (nameToUpdate, newNumber) => {
     console.log('name to update :>> ', nameToUpdate);
-    await getContacts().then(contacts => {
+    await getContacts().then( async contacts => {
         const contactToFind = contacts.find(contact => contact.name === nameToUpdate);
-        axios.patch(`${baseUrl}/${contactToFind.id}`, {number: newNumber});
+        await axios.patch(`${baseUrl}/${contactToFind.id}`, {number: newNumber});
     })
 
     return getContacts().then(updatedContacts => {return updatedContacts})
-    //await axios.patch(`${baseUrl}/${idToUpdate}`, {number: newNumber});
-    //return getContacts().then(updatedContacts => {return updatedContacts})
 }
 
 export default {getContacts, createContact, deleteContact, updateContactNumber}
