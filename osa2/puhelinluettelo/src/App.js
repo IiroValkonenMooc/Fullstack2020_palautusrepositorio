@@ -60,10 +60,15 @@ const App = () => {
     const retVal = contactService.createContact(newName, newNumber);
   
     retVal.then(retVal => {
-      if( retVal===0 ){
+      //console.log(retVal);
+
+      if(retVal.code === -1){
+        console.log(retVal);
+        changeMessage(retVal.error.error, true)
+      } else if( retVal===0 ){
         console.log('New contact added');
-        contactService.getContacts().then(contacts => setPersons(contacts) ); 
-        changeMessage('New contact added') 
+        contactService.getContacts().then(contacts => setPersons(contacts) )
+        .then( changeMessage('New contact added'))
       } else {
         const confirm = window.confirm( `${newName} is already added to phonebook.\nDo you want to update new number to existing contact` );
         if(confirm){

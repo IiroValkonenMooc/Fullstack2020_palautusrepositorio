@@ -13,10 +13,17 @@ const createContact = (newnName, newNumber) => {
 
         return findResult
         
-    }).then( findResult => {
+    }).then( async findResult => {
         if (findResult === -1) {
-            axios.post(baseUrl, { name: newnName, number: newNumber });
-            return 0;
+            const err = await axios.post(baseUrl, { name: newnName, number: newNumber })
+            .catch(error => {
+                return {code:-1,error: error.response.data}
+            })
+            if(err.code === -1){
+                return err
+            }else{
+                return 0;
+            }
         } else {
             return 1;
         }
@@ -37,14 +44,14 @@ const deleteContact = async (idToDelete) => {
     return getContacts().then(updatedContacts => {return {updatedContacts:updatedContacts, error: deleteSuccess}})
 }
 
-const updateContactNumber = async (nameToUpdate, newNumber) => {
-    console.log('name to update :>> ', nameToUpdate);
-    await getContacts().then( async contacts => {
-        const contactToFind = contacts.find(contact => contact.name === nameToUpdate);
-        await axios.patch(`${baseUrl}/${contactToFind.id}`, {number: newNumber});
-    })
-
-    return getContacts().then(updatedContacts => {return updatedContacts})
+const updateContactNumber =  (nameToUpdate, newNumber) => {
+    return getContacts().then( contacts => {
+        const contactToUpdate = contacts.find(contact => contact.name === nameToUpdate);
+        console.log('found contact :>> ', contactToUpdate);
+        return contactToUpdate
+    }).then( contactToUpdate => {
+        axios.put(`${baseUrl}/${contactToUpdate.id}`, {name:nameToUpdate ,number: newNumber});
+    }).then( () => getContacts()/*.then(updatedContacts => {return updatedContacts} )*/ )
 }
 
 export default {getContacts, createContact, deleteContact, updateContactNumber}
